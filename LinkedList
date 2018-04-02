@@ -1,0 +1,120 @@
+class Node:
+
+    def __init__(self, value=None, nextNode=None):
+        self.Value = value
+        self.NextNode = nextNode
+
+    def __str__(self):
+        return str('value: ' + str(self.Value) + ', next -> ' + str(self.NextNode))
+
+
+a = Node('a')
+b = Node('b')
+b.NextNode = a
+c = Node('c')
+c.NextNode = b
+
+print c,'\n', b,'\n', a 
+
+
+class LinkedList:
+    def __init__(self):
+        self.Head = None 
+        self.Tail = None
+        self.Count = 0
+
+    def __str__(self):
+        stringRepresentation = 'List, size(' + str(self.Count) + '):\n'
+        currentNode = self.Head
+        if self.Count == 0:
+            stringRepresentation = 'Empty list'
+        else:
+            while currentNode.NextNode is not None:
+                stringRepresentation += str(currentNode) + '\n'
+                currentNode = currentNode.NextNode
+            stringRepresentation += str(currentNode) + '\n'
+        
+        return stringRepresentation
+
+    def __iter__(self):
+        # Return the iterable object (self in our case)
+        self.currentNode = self.Head
+        return self
+
+    def next(self):
+        if self.currentNode != None:
+            nodeToReturn = self.currentNode
+            self.currentNode = self.currentNode.NextNode
+            return nodeToReturn
+        else:
+            raise StopIteration
+
+    def AddToFront(self, node):
+        try:
+            # Save off the head node so we don't lose it
+            headNode = self.Head
+
+            # Point head to the new node
+            self.Head = node
+
+            self.Head.NextNode = headNode
+            self.Count += 1
+
+            if self.Count == 1:
+                self.Tail = self.Head
+        except ValueError:
+            print 'Something went wrong when adding nodes'
+
+    def AddToEnd(self, node):
+        try:
+            if self.Count == 0:
+                self.Head = node
+            else:
+                self.Tail.NextNode = node
+            
+            self.Tail = node
+            self.Count += 1
+        except ValueError:
+            print 'Something went wrong when adding node to end of list'
+
+    def RemoveLast(self):
+        try:
+            if self.Count !=0:
+                if self.Count == 1:
+                    self.Head = None
+                    self.Tail = None
+                else:
+                    currentNode = self.Head
+                    while currentNode.NextNode != self.Tail:
+                        currentNode = currentNode.NextNode
+                    
+                    currentNode.NextNode = None
+                    self.Tail = currentNode
+                
+                self.Count -= 1
+
+        except:
+            raise
+
+    def RemoveFirst(self):
+        try:
+            if self.Count != 0:
+                self.Head = self.Head.NextNode
+                self.Count -= 1
+
+                if self.Count == 0:
+                    self.Tail = None
+        except:
+            raise
+
+myList = LinkedList()
+myList.AddToFront(Node('start node'))
+myList.AddToEnd(Node('end node'))
+myList.AddToEnd(Node('new last node'))
+myList.RemoveLast()
+
+print myList
+
+print '----- Prining my linked list with iterator ------\n'
+for node in myList:
+    print node
