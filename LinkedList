@@ -8,33 +8,24 @@ class Node:
         return str('value: ' + str(self.Value) + ', next -> ' + str(self.NextNode))
 
 
-a = Node('a')
-b = Node('b')
-b.NextNode = a
-c = Node('c')
-c.NextNode = b
-
-print c,'\n', b,'\n', a 
-
-
 class LinkedList:
     def __init__(self):
-        self.Head = None 
+        self.Head = None
         self.Tail = None
         self.Count = 0
 
     def __str__(self):
-        stringRepresentation = 'List, size(' + str(self.Count) + '):\n'
-        currentNode = self.Head
+        string_representation = 'List, size(' + str(self.Count) + '):\n'
+        current_node = self.Head
         if self.Count == 0:
-            stringRepresentation = 'Empty list'
+            string_representation = 'Empty list'
         else:
-            while currentNode.NextNode is not None:
-                stringRepresentation += str(currentNode) + '\n'
-                currentNode = currentNode.NextNode
-            stringRepresentation += str(currentNode) + '\n'
+            while current_node.NextNode is not None:
+                string_representation += str(current_node) + '\n'
+                current_node = current_node.NextNode
+            string_representation += str(current_node) + '\n'
         
-        return stringRepresentation
+        return string_representation
 
     def __iter__(self):
         # Return the iterable object (self in our case)
@@ -42,14 +33,14 @@ class LinkedList:
         return self
 
     def next(self):
-        if self.currentNode != None:
-            nodeToReturn = self.currentNode
+        if self.currentNode is not None:
+            node_to_return = self.currentNode
             self.currentNode = self.currentNode.NextNode
-            return nodeToReturn
+            return node_to_return
         else:
             raise StopIteration
 
-    def AddToFront(self, node):
+    def add_to_front(self, node):
         try:
             # Save off the head node so we don't lose it
             headNode = self.Head
@@ -65,7 +56,7 @@ class LinkedList:
         except ValueError:
             print 'Something went wrong when adding nodes'
 
-    def AddToEnd(self, node):
+    def add_to_end(self, node):
         try:
             if self.Count == 0:
                 self.Head = node
@@ -77,44 +68,43 @@ class LinkedList:
         except ValueError:
             print 'Something went wrong when adding node to end of list'
 
-    def RemoveLast(self):
-        try:
-            if self.Count !=0:
-                if self.Count == 1:
-                    self.Head = None
-                    self.Tail = None
-                else:
-                    currentNode = self.Head
-                    while currentNode.NextNode != self.Tail:
-                        currentNode = currentNode.NextNode
-                    
-                    currentNode.NextNode = None
-                    self.Tail = currentNode
-                
-                self.Count -= 1
+    def remove_last(self):
+        if self.Count != 0:
+            if self.Count == 1:
+                self.Head = None
+                self.Tail = None
+            else:
+                current_node = self.Head
+                while current_node.NextNode != self.Tail:
+                    current_node = current_node.NextNode
 
-        except:
-            raise
+                current_node.NextNode = None
+                self.Tail = current_node
 
-    def RemoveFirst(self):
-        try:
-            if self.Count != 0:
-                self.Head = self.Head.NextNode
-                self.Count -= 1
+            self.Count -= 1
 
-                if self.Count == 0:
-                    self.Tail = None
-        except:
-            raise
+
+    def remove_first(self):
+        if self.Count != 0:
+            self.Head = self.Head.NextNode
+            self.Count -= 1
+
+            if self.Count == 0:
+                self.Tail = None
+
 
 myList = LinkedList()
-myList.AddToFront(Node('start node'))
-myList.AddToEnd(Node('end node'))
-myList.AddToEnd(Node('new last node'))
-myList.RemoveLast()
+myList.add_to_front(Node('start node'))
+myList.add_to_end(Node('end node'))
+myList.add_to_end(Node('new last node'))
+myList.remove_last()
 
-print myList
+# print myList
 
-print '----- Prining my linked list with iterator ------\n'
-for node in myList:
+print '----- Printing my linked list with iterator ------\n'
+for node in myList:  # type: Node
+    print node
+
+print '----- Printing my linked list with iterator second time ------\n'
+for node in myList: # type: Node
     print node
